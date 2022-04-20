@@ -13,8 +13,8 @@ namespace Cms.Api.Core
             services.AddExecutors();
 
             //Register operators
-            services.AddSingleton<ConsentInitiator>();
-            services.AddSingleton<ConsentCompleter>();
+            services.AddSingleton<ConsentInitiationOperator>();
+            services.AddSingleton<ConsentCompletionOperator>();
 
             return services;
         }

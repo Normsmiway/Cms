@@ -11,9 +11,9 @@ namespace Cms.Api.Core.Initiation
 
     public class ConsentService : IConsentService
     {
-        private readonly ConsentInitiator _initiator;
-        private readonly ConsentCompleter _completer;
-        public ConsentService(ConsentCompleter completer, ConsentInitiator initiator)
+        private readonly ConsentInitiationOperator _initiator;
+        private readonly ConsentCompletionOperator _completer;
+        public ConsentService(ConsentCompletionOperator completer, ConsentInitiationOperator initiator)
         {
             _completer = completer;
             _initiator = initiator;

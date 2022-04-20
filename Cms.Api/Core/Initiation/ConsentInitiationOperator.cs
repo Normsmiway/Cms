@@ -3,9 +3,9 @@ using Cms.Api.Core.Executors;
 
 namespace Cms.Api.Core.Initiation
 {
-    public class ConsentInitiator : OperatorBase<ConsentInitiationRequest, ConsentInitiationResult>
+    public class ConsentInitiationOperator : OperatorBase<ConsentInitiationRequest, ConsentInitiationResult>
     {
-        public ConsentInitiator(IOperationExecutor<ConsentInitiationRequest, ConsentInitiationResult> exec) : base(exec)
+        public ConsentInitiationOperator(IOperationExecutor<ConsentInitiationRequest, ConsentInitiationResult> exec) : base(exec)
         {
         }
 

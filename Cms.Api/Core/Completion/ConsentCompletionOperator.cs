@@ -3,9 +3,9 @@ using Cms.Api.Core.Executors;
 
 namespace Cms.Api.Core.Completion
 {
-    public class ConsentCompleter: OperatorBase<ConsentCompletionRequest, ConsentCompletionResult>
+    public class ConsentCompletionOperator: OperatorBase<ConsentCompletionRequest, ConsentCompletionResult>
     {
-        public ConsentCompleter(IOperationExecutor<ConsentCompletionRequest, ConsentCompletionResult> exec) : base(exec)
+        public ConsentCompletionOperator(IOperationExecutor<ConsentCompletionRequest, ConsentCompletionResult> exec) : base(exec)
         {
         }
 
