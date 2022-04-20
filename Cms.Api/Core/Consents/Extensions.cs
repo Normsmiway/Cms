@@ -8,7 +8,7 @@ namespace Cms.Api.Core.Consents
         public static IServiceCollection AddConsent(this IServiceCollection services)
         {
 
-            services.AddScoped<IConsentOperation, InstantDeliveryConsentOperation>();
+            services.AddScoped<IConsentOperation, ConsentOperation>();
             services.AddScoped<IConsentOperation, DeferredDeliveryConsentOperation>();
 
             //register delivery mechanisms

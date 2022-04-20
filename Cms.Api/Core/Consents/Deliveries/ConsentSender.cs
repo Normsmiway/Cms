@@ -1,6 +1,6 @@
 ﻿namespace Cms.Api.Core.Consents.Deliveries
 {
-    public sealed class ConsentDeliverySender
+    public sealed class ConsentSender
     {
         public static Task<ConsentDeliveryResult> DeliverAsync(ConsentDeliveryRequest request)
         {
@@ -14,6 +14,20 @@
 
                 return sender.ExecuteAsync(request);
             }
+        }
+    }
+
+    public sealed class ConsentDeliveryFactory
+    {
+        public static ConsentDeliveryRequest Create(ConsentRequest consent)
+        {
+            return consent.DeliveryMechanism switch
+            {
+                ConsentDeliveryMechanism.Api => new ApiConsentDeliveryRequest() {CallbackUrl="" },
+                ConsentDeliveryMechanism.Email => new EmailConsentDeliveryRequest() { },
+                ConsentDeliveryMechanism.Sms => new SmsConsentDeliveryRequest() { },
+                _ => null,
+            };
         }
     }
 }

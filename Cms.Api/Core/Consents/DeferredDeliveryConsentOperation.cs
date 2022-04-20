@@ -4,7 +4,7 @@
     /// <summary>
     /// Consent Delivery is deferred until later
     /// </summary>
-    public class DeferredDeliveryConsentOperation : ConsentOperation
+    public class DeferredDeliveryConsentOperation : BaseConsentOperation
     {
         public override ConsentDeliveryMechanism DeliveryMechanism => ConsentDeliveryMechanism.Deferred;
 

@@ -4,7 +4,7 @@ namespace Cms.Api.Core
 {
     public abstract  class ConsentRequest : IOperationRequest<ConsentResult>
     {
-        public ConsentDeliveryMechanism DeliveryMechanism { get; set; } = ConsentDeliveryMechanism.Deferred;
+        public ConsentDeliveryMechanism DeliveryMechanism { get; set; } = ConsentDeliveryMechanism.None;
     }
     public abstract class ConsentResult
     {
@@ -12,7 +12,9 @@ namespace Cms.Api.Core
     }
     public enum ConsentDeliveryMechanism
     {
-        Deferred,
-        Instant
+        None,
+        Api,
+        Email,
+        Sms
     }
 }

@@ -19,7 +19,6 @@ namespace Cms.Api.Controllers
         public async Task<IActionResult> InitiateAsync(ConsentInitiationRequest request)
         {
             return Ok(await _service.InitiateAsync(request));
-
         }
 
         [HttpPost(Name = "complete")]

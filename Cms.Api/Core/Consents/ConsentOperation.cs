@@ -1,22 +1,55 @@
-﻿using Cms.Api.Abstractions;
+﻿using Cms.Api.Core.Bus;
+using Cms.Api.Core.Consents.Deliveries;
 
 namespace Cms.Api.Core
 {
-    #region Consent Operation
-    public abstract class ConsentOperation : IConsentOperation
+  
+    /// <summary>
+    /// Consent delivery is computed before operation is triggered
+    /// </summary>
+    public class ConsentOperation : BaseConsentOperation
     {
-        public abstract ConsentDeliveryMechanism DeliveryMechanism { get; }
-        protected abstract Task<ConsentResult> Consent(ConsentRequest request);
-        public Task<ConsentResult> ExecuteAsync(ConsentRequest request)
+        private readonly IEventBus _eventBus;
+        public override ConsentDeliveryMechanism DeliveryMechanism => ConsentDeliveryMechanism.None;
+
+        public ConsentOperation(IEventBus eventBus)
         {
-            return Consent(request);
+            _eventBus = eventBus;
+        }
+
+        //Post or compose delivery before initiating consent
+        protected async override Task<ConsentResult> Consent(ConsentRequest request)
+        {
+           await _eventBus.PublishAsync<BeforeConsent>(new BeforeConsent("",request.DeliveryMechanism.ToString()));
+
+            await ConsentSender.DeliverAsync(ConsentDeliveryFactory.Create(request));
+
+            return InstantDeliveryConsentOperationResult.Default;
         }
     }
 
-    public interface IConsentOperation : IOperation<ConsentRequest, ConsentResult>
+    public  class InstantDeliveryConsentOperationResult : ConsentResult
     {
-        public abstract ConsentDeliveryMechanism DeliveryMechanism { get; }
+        public static readonly InstantDeliveryConsentOperationResult Default = new();
     }
 
-#endregion
+
+    public class BeforeConentHandler
+    {
+        public async Task Handle(BeforeConsent consent)
+        {
+            //create virtual URL,
+            await Task.CompletedTask;
+        }
+    }
+
+
+    public class OnSendtingConentHandler
+    {
+        public async Task Handle(BeforeConsent consent)
+        {
+            //create virtual URL,
+            await Task.CompletedTask;
+        }
+    }
 }

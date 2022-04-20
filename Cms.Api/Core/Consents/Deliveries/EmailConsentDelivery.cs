@@ -10,7 +10,7 @@
     }
     public class EmailConsentDeliveryRequest : ConsentDeliveryRequest
     {
-        public override string DeliveryType => "Email";
+        public override string DeliveryType => ConsentDeliveryMechanism.Email.ToString();
     }
     public class EmailConsentDeliveryResult: ConsentDeliveryResult { }
 }

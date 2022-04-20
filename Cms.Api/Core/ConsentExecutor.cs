@@ -8,7 +8,8 @@
         }
         public static Task<ConsentResult> ConsentAsync(ConsentRequest request, CancellationToken cancellationToken = default)
         {
-            return ConsentOperationAccessor.ConsentAsync(request);
+            return ConsentAsync(request, cancellationToken);
+           // return ConsentOperationAccessor.ConsentAsync(request);
         }
         public void CompleteAsync()
         {
