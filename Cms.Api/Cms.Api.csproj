@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,14 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\UseCases\BuyGoods\Completion\" />
-    <Folder Include="Application\UseCases\BuyGoods\Initiation\" />
-    <Folder Include="Application\UseCases\Statements\Completion\" />
-    <Folder Include="Application\UseCases\Statements\Initiation\" />
+    <Folder Include="Application\UseCases\CompleteConsent\" />
+    <Folder Include="Application\UseCases\Services\BuyGoods\Completion\" />
+    <Folder Include="Application\UseCases\Services\BuyGoods\Initiation\" />
+    <Folder Include="Application\UseCases\Services\Statements\Completion\" />
+    <Folder Include="Application\UseCases\Services\Statements\Initiation\" />
+	
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>

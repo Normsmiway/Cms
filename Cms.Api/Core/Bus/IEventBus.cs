@@ -1,13 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using MediatR;
+using System.Text.Json.Serialization;
 
 namespace Cms.Api.Core.Bus
 {
     public interface IEventBus
     {
-        public Task PublishAsync<TEvent>(params IEvent[] @events) where TEvent : class, IEvent;
+        Task PublishAsync<TEvent>(params IEvent[] @events) where TEvent : class, IEvent;
     }
 
-    public interface IEvent
+    public interface IEvent : INotification
     {
         public string Id { get; }
         public string Type { get; }

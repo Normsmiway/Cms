@@ -6,7 +6,7 @@
     /// </summary>
     public class DeferredDeliveryConsentOperation : BaseConsentOperation
     {
-        public override ConsentDeliveryMechanism DeliveryMechanism => ConsentDeliveryMechanism.Deferred;
+        public override ConsentDeliveryMechanism DeliveryMechanism => ConsentDeliveryMechanism.None;
 
         protected async override Task<ConsentResult> Consent(ConsentRequest request)
         {

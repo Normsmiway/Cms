@@ -3,7 +3,7 @@ using Cms.Api.Core.Consents.Deliveries;
 
 namespace Cms.Api.Core
 {
-  
+
     /// <summary>
     /// Consent delivery is computed before operation is triggered
     /// </summary>
@@ -20,15 +20,20 @@ namespace Cms.Api.Core
         //Post or compose delivery before initiating consent
         protected async override Task<ConsentResult> Consent(ConsentRequest request)
         {
-           await _eventBus.PublishAsync<BeforeConsent>(new BeforeConsent("",request.DeliveryMechanism.ToString()));
+            await _eventBus.PublishAsync<BeforeConsent>(new BeforeConsent("", request.DeliveryMechanism.ToString()));
 
-            await ConsentSender.DeliverAsync(ConsentDeliveryFactory.Create(request));
+            var result = await ConsentSender.DeliverAsync(ConsentDeliveryFactory.Create(request));
+            if (result != null)
+            {
+                await _eventBus.PublishAsync<BeforeConsent>(new OnConsenting("", request.DeliveryMechanism.ToString()));
+            }
+
 
             return InstantDeliveryConsentOperationResult.Default;
         }
     }
 
-    public  class InstantDeliveryConsentOperationResult : ConsentResult
+    public class InstantDeliveryConsentOperationResult : ConsentResult
     {
         public static readonly InstantDeliveryConsentOperationResult Default = new();
     }

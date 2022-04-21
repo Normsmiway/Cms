@@ -1,6 +1,8 @@
-﻿using Cms.Api.Core.Completion;
+﻿using Cms.Api.Core.Bus;
+using Cms.Api.Core.Completion;
+using Cms.Api.Core.Initiation;
 
-namespace Cms.Api.Core.Initiation
+namespace Cms.Api.Core
 {
     public interface IConsentService
     {
@@ -12,19 +14,31 @@ namespace Cms.Api.Core.Initiation
     public class ConsentService : IConsentService
     {
         private readonly ConsentInitiationOperator _initiator;
+        private readonly IConsentOperation _consentOperation;
         private readonly ConsentCompletionOperator _completer;
-        public ConsentService(ConsentCompletionOperator completer, ConsentInitiationOperator initiator)
+
+        private readonly IEventBus _eventBus;
+        public ConsentService(ConsentCompletionOperator completer, ConsentInitiationOperator initiator, IEventBus eventBus)
         {
             _completer = completer;
             _initiator = initiator;
+            _eventBus = eventBus;
         }
-        public Task<ConsentInitiationResult> InitiateAsync(ConsentInitiationRequest request)
+        public async Task<ConsentInitiationResult> InitiateAsync(ConsentInitiationRequest request)
         {
-           return _initiator.InitiateAsync(request);
+            var result = await _initiator.InitiateAsync(request);
+
+            await _consentOperation.ExecuteAsync(null);
+
+            return result;
         }
-        public Task<ConsentCompletionResult> CompleteAsync(ConsentCompletionRequest request)
+        public async Task<ConsentCompletionResult> CompleteAsync(ConsentCompletionRequest request)
         {
-            return _completer.CompleteAsync(request);
+            var result = await _completer.CompleteAsync(request);
+
+            await _eventBus.PublishAsync<AfterConsent>(new AfterConsent(string.Empty, string.Empty));
+
+            return result;
         }
 
 

@@ -2,17 +2,20 @@
 {
     public sealed class ConsentSender
     {
-        public static Task<ConsentDeliveryResult> DeliverAsync(ConsentDeliveryRequest request)
+        public static async Task<ConsentDeliveryResult> DeliverAsync(ConsentDeliveryRequest request)
         {
+            ConsentDeliveryResult result = null;
             using (var scope = ServiceCompositionRoot.BeginLifetimeScope())
             {
                 var senders = scope.ServiceProvider.GetServices<IConsentDeliveryOperation>();
-                var sender = senders?.FirstOrDefault(c => string.Equals(c.DeliveryType,
-                     request.DeliveryType, StringComparison.OrdinalIgnoreCase));
-                if (sender == null)
-                    throw new InvalidOperationException("Invalid delivery request");
 
-                return sender.ExecuteAsync(request);
+                foreach (var delivery in request.ConsentRequest.DeliveryMechansims)
+                {
+                    var sender = senders?.FirstOrDefault(c => string.Equals(c.DeliveryType, delivery.ToString(), StringComparison.OrdinalIgnoreCase));
+                    result = await sender?.ExecuteAsync(request);
+                }
+
+                return result;
             }
         }
     }
@@ -23,9 +26,13 @@
         {
             return consent.DeliveryMechanism switch
             {
-                ConsentDeliveryMechanism.Api => new ApiConsentDeliveryRequest() {CallbackUrl="" },
-                ConsentDeliveryMechanism.Email => new EmailConsentDeliveryRequest() { },
-                ConsentDeliveryMechanism.Sms => new SmsConsentDeliveryRequest() { },
+                ConsentDeliveryMechanism.Api => new ApiConsentDeliveryRequest() { CallbackUrl = "" },
+                ConsentDeliveryMechanism.Email => new EmailConsentDeliveryRequest()
+                {
+                },
+                ConsentDeliveryMechanism.Sms => new SmsConsentDeliveryRequest()
+                {
+                },
                 _ => null,
             };
         }
